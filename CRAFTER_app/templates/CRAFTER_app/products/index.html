@@ -1,0 +1,41 @@
+{% extends 'CRAFTER_app/homepage.html' %}
+{% block title %}
+{% endblock title %}
+{% block content %}
+
+<section class="bg-light py-4 my-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h4 class="mb-3 text-dark">{{category_name}} Products</h4>
+        <hr style="border-color: #b8bfc2;">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
+            <li class="breadcrumb-item text-primary">{{category_name}}Categories</li>
+          </ol>
+        </nav>
+        {% include 'CRAFTER_app/INC/messages.html' %}
+      </div>
+      {% for item in products %}
+      <div class="col-md-3 col-lg-3"style="background-image: linear-gradient(to right, #eda9e6, #00ffd5);width: 280px;border-radius:5px">
+        <div class="card my-2">
+          <a href="#" class="btn ">
+            <img src="{{item.product_image.url}}" alt="Categories" class="card-image-top">
+          </a>
+          <a href="{% url 'product_details' category_name item.name %}" class="btn bg-light border-top " style="background-color:aqua;">
+            <div class="card-body">
+              <h5 class="card-title text-primary">{{item.name}}</h5>
+              <p class="card-text">
+                <span class="float-start new_price">Rs. {{item.selling_price | stringformat:'d'}}</span>
+                <span class="float-end  old_price"><s>Rs.{{item.orignal_price | stringformat:'d'}}</s></span>
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock content %}

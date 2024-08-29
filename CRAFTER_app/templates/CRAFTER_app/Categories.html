@@ -1,0 +1,54 @@
+{% extends 'Mrmart/layouts/main.html'%}
+{% load static %}
+
+{% block title %}
+   Collections | MR mart
+{% endblock title %}
+{% block content %}
+{% if isnot_authorized %}
+  <section class="py-5 text-center container" >
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">BestSellers</h1>
+            <p class="lead text-muted">Our most popular products based on sales and all Categories</p>
+            <p>
+                <a href="#" class="btn btn-primary my-2">Already User</a>
+                <a href="#" class="btn btn-secondary my-2">New Customer</a>
+            </p>
+        </div>
+    </div>
+  </section>
+  {% endif %}
+  <section class="bg-light py-4 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3 text-dark">Categories</h4>
+                <hr style="border-color: #0b0d0e;">
+                {% include 'Mrmart/inc/messages.html'%}
+            </div>
+            <img src="{% static 'images/label breakfast_pc.jpg'%}" class="card-img-top" alt="...">
+            <img src="{% static 'images/label beverages.jpg'%}" class="card-img-top" alt="...">
+            <img src="{% static 'images/label cooking.jpg'%}" class="card-img-top" alt="...">
+            <img src="{% static 'images/label dry fruits.jpg'%}" class="card-img-top" alt="...">
+            <img src="{% static 'images/label chocolates.jpg'%}" class="card-img-top" alt="...">
+
+            {% for item in category %}
+            <div class="col-md-4 col-lg-3 cat">
+                <div class="card my-3">
+                    <a href="{% url 'categories' item.name %}" class="btn ">
+                      <img src="{{item.image.url}}" alt="Categories" class="card-image-top " style="width:200px;height: 150px;">
+                    </a>
+                    <a href="{% url 'categories' item.name %}" class="btn">
+                      <div class="card-body">
+                        <h5 class="card-title text-primary">{{item.name}}</h5>
+                        <p class="card-text">{{item.description}}</p>
+                    </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+  </section>
+{% endblock content %}

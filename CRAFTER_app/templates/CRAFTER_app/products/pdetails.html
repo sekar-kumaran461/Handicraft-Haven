@@ -1,0 +1,124 @@
+{% extends 'CRAFTER_app/homepage.html' %}
+
+{% block title %}
+Products | Heaven
+{% endblock title %}
+{% block content %}
+<section class="bg-light py-4 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3">{{product}} Details</h4>
+                <hr style="border-color: #b8bfc2;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="{% url 'homepage'%}">Home</a></li>
+                      <li class="breadcrumb-item"><a href="{% url 'categories' product.categories.name %}">Categories</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">{{product}}</li>
+                    </ol>
+                  </nav>
+            </div>
+            <div class="col-4 my-3 pic-box">
+                {% if product.trending %}
+                <div class="hot">Most Sold</div>
+                {% endif %}
+                <img src="{{product.product_image.url}}" alt="{{product}}" class="card-image-top">
+            </div>
+            <div class="col-8 my-3">
+                <h5 class="mb-3 text-success">{{product | upper}}</h5>
+                <p>{{product.brand}}</p>
+                <p>{{product.description}}</p>
+                <h6 class="my-2 text-danger">Current price :Rs. <s>{{product.orignal_price}}</s></h6>
+                <h5 class="my-2 text-primary">Discount price :Rs. {{product.product_price}}</h5>
+                <div class="my-3">
+                {%if product.quantity > 0 %}
+                <input type="text" value="{{product.id}}" id="pid">
+                <p>
+                    <div class="input-group">
+                        <button class="input-group-text bg-sucess" id="btnminus"><i class="fa fa-minus"></i></button>
+                        <input type="text" class="form-control text-center" value="1" id="txtqty" type="text" name="qty">
+                        <button class="input-group-text bg-sucess" id="btnplus"><i class="fa fa-plus"></i></button>
+                    </div>
+                </p>
+                <button class="btn btn-primary"><i class="fa fa-shoppingcart"></i> Add to Cart</button>
+                {%else%}
+                <button class="btn btn-secondary"><i class="fa fa-minus"></i> Out of Stock</button>
+
+                {% endif %}
+                <button class="btn btn-danger" id="btncart"><i class="fa fa-heart"></i> Add to Cart</button>
+                <button class="btn btn-primary">Buy Now</button>
+                </div>
+            </div>            
+        </div>
+    </div>
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded",function(event){
+        const btnplus=document.getElementById("btnplus");
+        const btnminus=document.getElementById("btnminus");
+        const txtqty=document.getElementById("txtqty");
+        const pid=document.getElementById("pid");
+        const tkn=document.querySelector('[name="csrfmiddlewaretoken"]'.value);
+        const btncart = document.getElementById('btncart');
+
+
+
+
+
+        btnplus.addEventListener("click",function(){
+            let qty=parseInt(txtqty.value,10);
+            qty=isNaN(qty)?0:qty;
+            // console.log(qty);
+            if(qty<10){
+                qty++;
+                txtqty.value=qty;
+                }
+            })
+
+            btnminus.addEventListener("click",function(){
+            let qty=parseInt(txtqty.value,10);
+            qty=isNaN(qty)?0:qty;
+            // console.log(qty);
+            if(qty>1){
+                qty--;
+                txtqty.value=qty;
+                }
+            });
+            btncart.addEventListener("click",function(){
+                let qty=parseInt(txtqty.value,10);
+                qty=isNaN(qty)?0:qty;
+
+                if(qtn>0){
+                    let postObj={
+                        product_qty:qty,
+                        pid:pid.value,
+                    }
+                    // console.log(postObj);
+                    fetch("/addtocart",{
+                        method:"POST",
+                        credentials:'same-origin',
+                        headers:{
+                            'Accept':'application/json',
+                            'x-requested-with':'XMLHttpRequest',
+                            'X-CSRFToken':'{{csrf_token}}'
+                        },
+                         body:JSON.stringify(postObj)
+                    }).then(response => {
+                        return response.json();
+                    }).then(data => {
+                            // console.log(data);
+                            alert(data['status'])
+                    })
+
+
+                
+                }else{
+                    alert("Please select quantity");
+                }
+                });
+
+
+
+    })
+</script>
+{% endblock content %}

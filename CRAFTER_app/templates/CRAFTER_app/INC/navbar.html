@@ -1,0 +1,55 @@
+{% load static %}
+<style>
+  .Cimages{
+    border-radius: 50px;
+    padding: 5px;
+    width: 150px;
+    height: 150px;
+  }
+</style>
+<nav class="navbar navbar-expand-lg --bs-primary-bg-subtle"
+  style="background-image: linear-gradient(to right, #eda9e6, #00ffd5);border-bottom: 1px solid;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><i class="fa fa-cart-plus"></i> Mr mart</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active dark" aria-current="page" href=""><i class="fa fa-home"></i>
+            Home</a>
+        </li>
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href=""><i class="fa fa-user"></i> {{request.user}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href=""><i class="fa fa-sign-out"></i> Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'register' %}"><i class="fa fa-users"></i> Sign Up</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}"><i class="fa fa-sign-in"></i> Sign In</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'cart' %}"><i class="fa fa-shopping-cart"></i> Cart</a>
+        </li>
+
+
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+
+  <script async
+  src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&loading=async&libraries=places&callback=initMap">
+</script>
+</nav>
